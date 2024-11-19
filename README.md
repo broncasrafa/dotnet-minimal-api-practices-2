@@ -9,15 +9,15 @@ Projeto para praticas na utilização de Minimal Apis no .NET 8
 <h3 align="left">Connect with me:</h3>
 <p align="left">
     <a href="https://www.linkedin.com/in/rafael-francisco-44750522/" target="blank">
-        <img align="center" height="30" width="40" alt="rafael-francisco" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/linked-in-alt.svg"  />
+        <img align="center" height="30" width="40" alt="rafael-francisco" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/linked-in-alt.svg" style="text-decoration: none;" />
     </a>
     <a href="https://github.com/broncasrafa" target="blank">
-        <img align="center" height="30" width="40" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/github.svg" alt="broncasrafa" />
+        <img align="center" height="30" width="40" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/github.svg" alt="broncasrafa"  style="text-decoration: none;" />
     </a>
     <a href="https://web.facebook.com/rafael.francisco.520" target="blank">
-        <img align="center" alt="rafael.francisco" height="30" width="40" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/facebook.svg" />
+        <img align="center" alt="rafael.francisco" height="30" width="40" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/facebook.svg"  style="text-decoration: none;" />
     </a>
     <a href="https://www.instagram.com/broncasrafa/" target="blank">
-        <img align="center" height="30" width="40" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/instagram.svg" alt="broncasrafa" />
+        <img align="center" height="30" width="40" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/instagram.svg" alt="broncasrafa"  style="text-decoration: none;" />
     </a>
 </p>
