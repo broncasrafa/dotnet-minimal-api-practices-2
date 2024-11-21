@@ -3,7 +3,6 @@ using Student.Domain.Interfaces.Repositories.Common;
 
 namespace Student.Domain.Interfaces.Repositories;
 
-public interface ICourseRepository : IGenericRepository<Course>
+public interface IEnrollmentRepository : IGenericRepository<Enrollment>
 {
-    Task<Course> GetStudentListAsync(int courseId);
 }
