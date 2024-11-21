@@ -14,14 +14,14 @@ public static class CourseEndpoints
     {
         var routes = builder.MapGroup("api/courses").WithTags("Courses");
 
-        routes.MapGet("/", CourseEndpoints.GetAll)
+        routes.MapGet("/", GetAll)
             .WithName("GetAll")
             .Produces<ApiResult<IEnumerable<CourseResponse>>>(StatusCodes.Status200OK)
             .WithDescription("Obter a lista de cursos")
             .WithSummary("Obter a lista de cursos")
             .WithOpenApi();
 
-        routes.MapGet("/{id:int}", CourseEndpoints.GetOne)
+        routes.MapGet("/{id:int}", GetOne)
             .WithName("GetOne")
             .Produces<ApiResult<CourseResponse>>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
@@ -30,7 +30,7 @@ public static class CourseEndpoints
             .WithSummary("Obter o curso pelo ID especificado")
             .WithOpenApi();
 
-        routes.MapPost("/", CourseEndpoints.Post)
+        routes.MapPost("/", Post)
             .AddEndpointFilter<ValidationFilter>()
             .WithName("Post")
             .Produces<ApiResult<CourseResponse>>(StatusCodes.Status201Created)
@@ -39,7 +39,7 @@ public static class CourseEndpoints
             .WithSummary("Registrar um novo curso")
             .WithOpenApi();
 
-        routes.MapPut("/{id:int}", CourseEndpoints.Put)
+        routes.MapPut("/{id:int}", Put)
             .AddEndpointFilter<ValidationFilter>()
             .WithName("Put")
             .Produces<ApiResult<CourseResponse>>(StatusCodes.Status200OK)
@@ -49,7 +49,7 @@ public static class CourseEndpoints
             .WithSummary("Atualizar os dados do curso pelo ID especificado")
             .WithOpenApi();
 
-        routes.MapDelete("/{id:int}", CourseEndpoints.Delete)
+        routes.MapDelete("/{id:int}", Delete)
             .WithName("Put")
             .Produces<ApiResult<bool>>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
@@ -72,7 +72,7 @@ public static class CourseEndpoints
     }
     private async static Task<IResult> GetOne(ILogger<Program> logger, ICourseService service, int id)
     {
-        logger.LogInformation($"Getting coupon with id: '{id}'");
+        logger.LogInformation($"Getting course with id: '{id}'");
 
         if (id < 1)
         {
