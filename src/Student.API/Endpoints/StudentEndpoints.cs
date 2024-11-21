@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity.Data;
+using Microsoft.AspNetCore.Mvc;
 using Student.API.Filters;
 using Student.API.Models;
 using Student.Application.DTO.Request;
@@ -14,15 +15,15 @@ public static class StudentEndpoints
     {
         var routes = builder.MapGroup("api/students").WithTags("Students");
 
-        routes.MapGet("/", GetAll)
-            .WithName("GetAll")
+        routes.MapGet("/", GetAllStudents)
+            .WithName("GetAllStudents")
             .Produces<ApiResult<IEnumerable<StudentResponse>>>(StatusCodes.Status200OK)
             .WithDescription("Obter a lista de alunos")
             .WithSummary("Obter a lista de alunos")
             .WithOpenApi();
 
-        routes.MapGet("/{id:int}", GetOne)
-            .WithName("GetOne")
+        routes.MapGet("/{id:int}", GetOneStudent)
+            .WithName("GetOneStudent")
             .Produces<ApiResult<StudentResponse>>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
@@ -30,8 +31,8 @@ public static class StudentEndpoints
             .WithSummary("Obter o aluno pelo ID especificado")
         .WithOpenApi();
 
-        routes.MapGet("/{id:int}/details", GetDetails)
-            .WithName("GetDetails")
+        routes.MapGet("/{id:int}/details", GetStudentDetails)
+            .WithName("GetStudentDetails")
             .Produces<ApiResult<StudentDetailsResponse>>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
@@ -39,18 +40,19 @@ public static class StudentEndpoints
             .WithSummary("Obter os detalhes do aluno pelo ID especificado")
         .WithOpenApi();
 
-        routes.MapPost("/", Post)
-            .AddEndpointFilter<ValidationFilter>()
-            .WithName("Post")
+        routes.MapPost("/", PostStudent)            
+            .WithName("PostStudent")
+            .Accepts<StudentCreateRequest>("application/json")
             .Produces<ApiResult<StudentResponse>>(StatusCodes.Status201Created)
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
+            .AddEndpointFilter<ValidationFilter>()
             .WithDescription("Registrar um novo aluno")
             .WithSummary("Registrar um novo aluno")
             .WithOpenApi();
 
-        routes.MapPut("/{id:int}", Put)
+        routes.MapPut("/{id:int}", PutStudent)
             .AddEndpointFilter<ValidationFilter>()
-            .WithName("Put")
+            .WithName("PutStudent")
             .Produces<ApiResult<StudentResponse>>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
@@ -58,8 +60,8 @@ public static class StudentEndpoints
             .WithSummary("Atualizar os dados do aluno pelo ID especificado")
             .WithOpenApi();
 
-        routes.MapDelete("/{id:int}", Delete)
-            .WithName("Delete")
+        routes.MapDelete("/{id:int}", DeleteStudent)
+            .WithName("DeleteStudent")
             .Produces<ApiResult<bool>>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
@@ -71,7 +73,7 @@ public static class StudentEndpoints
     }
 
 
-    private async static Task<IResult> GetAll(ILogger<Program> logger, IStudentService service)
+    private async static Task<IResult> GetAllStudents(ILogger<Program> logger, IStudentService service)
     {
         logger.LogInformation("Getting all students");
 
@@ -79,7 +81,7 @@ public static class StudentEndpoints
 
         return TypedResults.Ok(ApiResult<IEnumerable<StudentResponse>>.Success(response));
     }
-    private async static Task<IResult> GetOne(ILogger<Program> logger, IStudentService service, int id)
+    private async static Task<IResult> GetOneStudent(ILogger<Program> logger, IStudentService service, int id)
     {
         logger.LogInformation($"Getting student with ID: '{id}'");
 
@@ -92,7 +94,7 @@ public static class StudentEndpoints
         var response = await service.GetByIdAsync(id);
         return TypedResults.Ok(ApiResult<StudentResponse>.Success(response));
     }
-    private async static Task<IResult> GetDetails(ILogger<Program> logger, IStudentService service, int id)
+    private async static Task<IResult> GetStudentDetails(ILogger<Program> logger, IStudentService service, int id)
     {
         logger.LogInformation($"Getting student with ID: '{id}'");
 
@@ -105,14 +107,14 @@ public static class StudentEndpoints
         var response = await service.GetStudentDetailsAsync(id);
         return TypedResults.Ok(ApiResult<StudentDetailsResponse>.Success(response));
     }
-    private async static Task<IResult> Post(ILogger<Program> logger, IStudentService service, [FromBody] StudentCreateRequest request)
+    private async static Task<IResult> PostStudent([FromBody] StudentCreateRequest request, ILogger<Program> logger, IStudentService service)
     {
         logger.LogInformation($"Creating new student with name: '{request.FirstName} {request.LastName}'");
 
         var response = await service.InsertAsync(request);
-        return TypedResults.CreatedAtRoute(routeName: "GetOne", routeValues: new { id = response.Id }, value: ApiResult<StudentResponse>.Success(response));
+        return TypedResults.CreatedAtRoute(routeName: "GetOneStudent", routeValues: new { id = response.Id }, value: ApiResult<StudentResponse>.Success(response));
     }
-    private async static Task<IResult> Put(ILogger<Program> logger, IStudentService service, int id, [FromBody] StudentUpdateRequest request)
+    private async static Task<IResult> PutStudent([FromBody] StudentUpdateRequest request, ILogger<Program> logger, IStudentService service, int id)
     {
         if (id < 1 || request.Id < 1 || (id != request.Id))
         {
@@ -125,7 +127,7 @@ public static class StudentEndpoints
         var response = await service.UpdateAsync(request);
         return TypedResults.Ok(ApiResult<StudentResponse>.Success(response));
     }
-    private async static Task<IResult> Delete(ILogger<Program> logger, IStudentService service, int id)
+    private async static Task<IResult> DeleteStudent(ILogger<Program> logger, IStudentService service, int id)
     {
         if (id < 1)
         {

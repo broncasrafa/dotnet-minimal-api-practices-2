@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using Microsoft.OpenApi.Models;
+using Student.API.Endpoints;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
@@ -53,5 +54,19 @@ public static class RegisterServices
                 o.SerializerSettings.PreserveReferencesHandling = PreserveReferencesHandling.None;
                 o.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             });
+            //.AddJsonOptions(options =>
+            //{
+            //    options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+            //});
+    }
+
+
+
+    public static IApplicationBuilder MapEndpoints(this WebApplication app)
+    {
+        app.MapCourseEndpoints();
+        app.MapStudentEndpoints();
+        app.MapEnrollmentEndpoints();
+        return app;
     }
 }

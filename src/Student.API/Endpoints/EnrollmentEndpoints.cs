@@ -14,15 +14,15 @@ public static class EnrollmentEndpoints
     {
         var routes = builder.MapGroup("api/enrollments").WithTags("Enrollments");
 
-        routes.MapGet("/", GetAll)
-            .WithName("GetAll")
+        routes.MapGet("/", GetAllEnrollments)
+            .WithName("GetAllEnrollments")
             .Produces<ApiResult<IEnumerable<EnrollmentResponse>>>(StatusCodes.Status200OK)
             .WithDescription("Obter a lista de matrículas")
             .WithSummary("Obter a lista de matrículas")
             .WithOpenApi();
 
-        routes.MapGet("/{id:int}", GetOne)
-            .WithName("GetOne")
+        routes.MapGet("/{id:int}", GetOneEnrollment)
+            .WithName("GetOneEnrollment")
             .Produces<ApiResult<EnrollmentResponse>>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
@@ -30,17 +30,17 @@ public static class EnrollmentEndpoints
             .WithSummary("Obter a matrícula pelo ID especificado")
             .WithOpenApi();
 
-        routes.MapPost("/", Post)
+        routes.MapPost("/", PostEnrollment)
             .AddEndpointFilter<ValidationFilter>()
-            .WithName("Post")
+            .WithName("PostEnrollment")
             .Produces<ApiResult<EnrollmentResponse>>(StatusCodes.Status201Created)
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
             .WithDescription("Registrar uma nova matrícula")
             .WithSummary("Registrar uma nova matrícula")
             .WithOpenApi();
 
-        routes.MapDelete("/{id:int}", Delete)
-            .WithName("Delete")
+        routes.MapDelete("/{id:int}", DeleteEnrollment)
+            .WithName("DeleteEnrollment")
             .Produces<ApiResult<bool>>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
@@ -52,7 +52,7 @@ public static class EnrollmentEndpoints
     }
 
 
-    private async static Task<IResult> GetAll(ILogger<Program> logger, IEnrollmentService service)
+    private async static Task<IResult> GetAllEnrollments(ILogger<Program> logger, IEnrollmentService service)
     {
         logger.LogInformation("Getting all enrollments");
 
@@ -60,7 +60,7 @@ public static class EnrollmentEndpoints
 
         return TypedResults.Ok(ApiResult<IEnumerable<EnrollmentResponse>>.Success(response));
     }
-    private async static Task<IResult> GetOne(ILogger<Program> logger, IEnrollmentService service, int id)
+    private async static Task<IResult> GetOneEnrollment(ILogger<Program> logger, IEnrollmentService service, int id)
     {
         logger.LogInformation($"Getting enrollment with ID: '{id}'");
 
@@ -73,14 +73,14 @@ public static class EnrollmentEndpoints
         var response = await service.GetByIdAsync(id);
         return TypedResults.Ok(ApiResult<EnrollmentResponse>.Success(response));
     }
-    private async static Task<IResult> Post(ILogger<Program> logger, IEnrollmentService service, [FromBody] EnrollmentCreateRequest request)
+    private async static Task<IResult> PostEnrollment([FromBody] EnrollmentCreateRequest request, ILogger<Program> logger, IEnrollmentService service)
     {
         logger.LogInformation($"Creating new enrollment");
 
         var response = await service.InsertAsync(request);
-        return TypedResults.CreatedAtRoute(routeName: "GetOne", routeValues: new { id = response.Id }, value: ApiResult<EnrollmentResponse>.Success(response));
+        return TypedResults.CreatedAtRoute(routeName: "GetOneEnrollment", routeValues: new { id = response.Id }, value: ApiResult<EnrollmentResponse>.Success(response));
     }
-    private async static Task<IResult> Delete(ILogger<Program> logger, IEnrollmentService service, int id)
+    private async static Task<IResult> DeleteEnrollment(ILogger<Program> logger, IEnrollmentService service, int id)
     {
         if (id < 1)
         {

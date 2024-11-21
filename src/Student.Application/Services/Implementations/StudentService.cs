@@ -62,7 +62,7 @@ internal class StudentService : IStudentService
                                              .OrElseThrowsAsync(new StudentNotFoundException(request.Id));
         currentStudent.FirstName = request.FirstName;
         currentStudent.LastName = request.LastName;
-        currentStudent.DateofBirth = request.DateofBirth;
+        currentStudent.DateOfBirth = request.DateofBirth;
         currentStudent.Picture = request.Picture;
         // currentStudent.UpdatedBy = request.UpdatedBy;
         currentStudent.UpdatedAt = DateTime.UtcNow;

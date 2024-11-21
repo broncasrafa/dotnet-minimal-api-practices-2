@@ -12,8 +12,8 @@ using Student.Infrastructure.Persistence.Context;
 namespace Student.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241119203303_Adding_Tables")]
-    partial class Adding_Tables
+    [Migration("20241121170750_Adding_Tables_And_Seed_Data")]
+    partial class Adding_Tables_And_Seed_Data
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,7 +21,7 @@ namespace Student.Infrastructure.Persistence.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasDefaultSchema("dbo")
-                .HasAnnotation("ProductVersion", "9.0.0")
+                .HasAnnotation("ProductVersion", "8.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -51,6 +51,20 @@ namespace Student.Infrastructure.Persistence.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", "dbo");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "a7cc3bab-3631-412d-a8bc-e9dc628d2c8b",
+                            Name = "Administrator",
+                            NormalizedName = "ADMINISTRATOR"
+                        },
+                        new
+                        {
+                            Id = "fcbcdd68-cccf-4e6c-9b3f-fa183fd8a175",
+                            Name = "User",
+                            NormalizedName = "USER"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -253,6 +267,29 @@ namespace Student.Infrastructure.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Course", "dbo");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2024, 11, 21, 17, 7, 49, 849, DateTimeKind.Utc).AddTicks(2521),
+                            Credits = 3,
+                            Title = "Minimal API Development"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedAt = new DateTime(2024, 11, 21, 17, 7, 49, 849, DateTimeKind.Utc).AddTicks(2525),
+                            Credits = 5,
+                            Title = "Spring Boot Development"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedAt = new DateTime(2024, 11, 21, 17, 7, 49, 849, DateTimeKind.Utc).AddTicks(2527),
+                            Credits = 4,
+                            Title = "Ultimate .NET API Development"
+                        });
                 });
 
             modelBuilder.Entity("Student.Domain.Entities.Enrollment", b =>
@@ -304,7 +341,7 @@ namespace Student.Infrastructure.Persistence.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("DateofBirth")
+                    b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("FirstName")
@@ -384,13 +421,13 @@ namespace Student.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("Student.Domain.Entities.Enrollment", b =>
                 {
                     b.HasOne("Student.Domain.Entities.Course", "Course")
-                        .WithMany()
+                        .WithMany("Enrollments")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Student.Domain.Entities.Student", "Student")
-                        .WithMany()
+                        .WithMany("Enrollments")
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -398,6 +435,16 @@ namespace Student.Infrastructure.Persistence.Migrations
                     b.Navigation("Course");
 
                     b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("Student.Domain.Entities.Course", b =>
+                {
+                    b.Navigation("Enrollments");
+                });
+
+            modelBuilder.Entity("Student.Domain.Entities.Student", b =>
+                {
+                    b.Navigation("Enrollments");
                 });
 #pragma warning restore 612, 618
         }

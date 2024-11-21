@@ -36,6 +36,12 @@ internal class CourseService : ICourseService
                                     .OrElseThrowsAsync(new CourseNotFoundException(id));
         return _mapper.Map<CourseResponse>(data);
     }
+
+    public async Task<CourseDetailsResponse> GetCourseStudentsAsync(int courseId)
+    {
+        var data = await _repository.GetStudentListAsync(courseId);
+        return _mapper.Map<CourseDetailsResponse>(data);
+    }
     public async Task<CourseResponse> FindByAsync(Expression<Func<Course, bool>> predicate)
     {
         var data = await _repository.FirstOrDefaultAsync(predicate);
@@ -68,4 +74,6 @@ internal class CourseService : ICourseService
        
         await _repository.DeleteAsync(currentCourse);
     }
+
+    
 }

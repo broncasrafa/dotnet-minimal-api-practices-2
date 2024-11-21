@@ -1,6 +1,4 @@
 using Student.API.DependencyInjection;
-using Student.API.Endpoints;
-using Student.API.Endpoints.Course;
 using Student.Application.DependencyInjection;
 using Student.Infrastructure.DependencyInjection;
 
@@ -35,11 +33,7 @@ app.UseStaticFiles();
 //app.UseExceptionHandler();
 app.UseCors("AllowAllPolicy");
 
-#region [ Endpoints ]
-app.MapCourseEndpoints();
-app.MapStudentEndpoints();
-app.MapEnrollmentEndpoints();
-#endregion
+app.MapEndpoints();
 
 
 

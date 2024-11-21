@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace Student.Infrastructure.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class Adding_Tables : Migration
+    public partial class Adding_Tables_And_Seed_Data : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -85,7 +87,7 @@ namespace Student.Infrastructure.Persistence.Migrations
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     NumberId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Picture = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DateofBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -244,6 +246,27 @@ namespace Student.Infrastructure.Persistence.Migrations
                         principalTable: "Student",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                schema: "dbo",
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { "a7cc3bab-3631-412d-a8bc-e9dc628d2c8b", null, "Administrator", "ADMINISTRATOR" },
+                    { "fcbcdd68-cccf-4e6c-9b3f-fa183fd8a175", null, "User", "USER" }
+                });
+
+            migrationBuilder.InsertData(
+                schema: "dbo",
+                table: "Course",
+                columns: new[] { "Id", "CreatedAt", "CreatedBy", "Credits", "Title", "UpdatedAt", "UpdatedBy" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2024, 11, 21, 17, 7, 49, 849, DateTimeKind.Utc).AddTicks(2521), null, 3, "Minimal API Development", null, null },
+                    { 2, new DateTime(2024, 11, 21, 17, 7, 49, 849, DateTimeKind.Utc).AddTicks(2525), null, 5, "Spring Boot Development", null, null },
+                    { 3, new DateTime(2024, 11, 21, 17, 7, 49, 849, DateTimeKind.Utc).AddTicks(2527), null, 4, "Ultimate .NET API Development", null, null }
                 });
 
             migrationBuilder.CreateIndex(

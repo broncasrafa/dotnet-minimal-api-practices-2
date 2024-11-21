@@ -9,6 +9,7 @@ public interface ICourseService
 {
     Task<IEnumerable<CourseResponse>> GetAllAsync();
     Task<CourseResponse> GetByIdAsync(int id);
+    Task<CourseDetailsResponse> GetCourseStudentsAsync(int courseId);
     Task<CourseResponse> FindByAsync(Expression<Func<Course, bool>> predicate);
     Task<CourseResponse> InsertAsync(CourseCreateRequest request);
     Task<CourseResponse> UpdateAsync(CourseUpdateRequest request);

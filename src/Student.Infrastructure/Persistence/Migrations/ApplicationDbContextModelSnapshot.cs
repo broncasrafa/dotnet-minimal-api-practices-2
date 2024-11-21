@@ -18,7 +18,7 @@ namespace Student.Infrastructure.Persistence.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasDefaultSchema("dbo")
-                .HasAnnotation("ProductVersion", "9.0.0")
+                .HasAnnotation("ProductVersion", "8.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -52,13 +52,13 @@ namespace Student.Infrastructure.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "fb512387-6e99-4c02-9aed-44e8daaec17e",
+                            Id = "a7cc3bab-3631-412d-a8bc-e9dc628d2c8b",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
-                            Id = "7af0054e-c8a1-4724-8f21-e9b4bf14b10b",
+                            Id = "fcbcdd68-cccf-4e6c-9b3f-fa183fd8a175",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -269,21 +269,21 @@ namespace Student.Infrastructure.Persistence.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 11, 19, 20, 45, 32, 774, DateTimeKind.Utc).AddTicks(5941),
+                            CreatedAt = new DateTime(2024, 11, 21, 17, 7, 49, 849, DateTimeKind.Utc).AddTicks(2521),
                             Credits = 3,
                             Title = "Minimal API Development"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2024, 11, 19, 20, 45, 32, 774, DateTimeKind.Utc).AddTicks(6624),
+                            CreatedAt = new DateTime(2024, 11, 21, 17, 7, 49, 849, DateTimeKind.Utc).AddTicks(2525),
                             Credits = 5,
                             Title = "Spring Boot Development"
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2024, 11, 19, 20, 45, 32, 774, DateTimeKind.Utc).AddTicks(6626),
+                            CreatedAt = new DateTime(2024, 11, 21, 17, 7, 49, 849, DateTimeKind.Utc).AddTicks(2527),
                             Credits = 4,
                             Title = "Ultimate .NET API Development"
                         });
@@ -338,7 +338,7 @@ namespace Student.Infrastructure.Persistence.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("DateofBirth")
+                    b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("FirstName")
@@ -418,13 +418,13 @@ namespace Student.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("Student.Domain.Entities.Enrollment", b =>
                 {
                     b.HasOne("Student.Domain.Entities.Course", "Course")
-                        .WithMany()
+                        .WithMany("Enrollments")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Student.Domain.Entities.Student", "Student")
-                        .WithMany()
+                        .WithMany("Enrollments")
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -432,6 +432,16 @@ namespace Student.Infrastructure.Persistence.Migrations
                     b.Navigation("Course");
 
                     b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("Student.Domain.Entities.Course", b =>
+                {
+                    b.Navigation("Enrollments");
+                });
+
+            modelBuilder.Entity("Student.Domain.Entities.Student", b =>
+                {
+                    b.Navigation("Enrollments");
                 });
 #pragma warning restore 612, 618
         }

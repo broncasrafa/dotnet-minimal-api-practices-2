@@ -8,6 +8,6 @@ public class Student : BaseEntity
     public string LastName { get; set; }
     public string NumberId { get; set; } = Guid.NewGuid().ToString();
     public string Picture { get; set; }
-    public DateTime DateofBirth { get; set; }
+    public DateTime DateOfBirth { get; set; }
     public List<Enrollment> Enrollments { get; set; } = new List<Enrollment>();
 }

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace Student.API.Models;
 
@@ -14,7 +15,7 @@ internal class ApiResult<T>
     [JsonProperty(Order = -3)]
     public bool Succeeded { get; }
 
-    [JsonProperty(Order = -2)]
+    [JsonProperty(Order = -2, NullValueHandling = NullValueHandling.Ignore)]
     public T Data
     {
         get
@@ -25,7 +26,7 @@ internal class ApiResult<T>
         private init => _value = value;
     }
 
-    [JsonProperty(Order = -1)]
+    [JsonProperty(Order = -1, NullValueHandling = NullValueHandling.Ignore)]
     public List<string> Errors { get; }
 
 
