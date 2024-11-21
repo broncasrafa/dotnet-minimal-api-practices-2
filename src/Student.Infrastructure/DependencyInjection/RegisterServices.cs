@@ -2,8 +2,10 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Student.Domain.Interfaces.Repositories;
+using Student.Domain.Interfaces.Repositories.Common;
 using Student.Infrastructure.Persistence.Context;
 using Student.Infrastructure.Persistence.Repositories;
+using Student.Infrastructure.Persistence.Repositories.Common;
 
 namespace Student.Infrastructure.DependencyInjection;
 
@@ -32,6 +34,8 @@ public static class RegisterServices
     }
     private static void AddRepositories(IServiceCollection services)
     {
+        services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
         services.AddTransient<ICourseRepository, CourseRepository>();
         services.AddTransient<IStudentRepository, StudentRepository>();
     }
