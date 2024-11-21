@@ -12,5 +12,13 @@ internal class MappingProfile : Profile
         CreateMap<Course, CourseResponse>().ReverseMap();
         CreateMap<CourseCreateRequest, Course>().ReverseMap();
         CreateMap<CourseUpdateRequest, Course>().ReverseMap();
+        CreateMap<Course, CourseDetailsResponse>()
+            .ForMember(c => c.Students, x => x.MapFrom(course => course.Enrollments.Select(student => student.Student)));
+
+        CreateMap<Domain.Entities.Student, StudentResponse>().ReverseMap();
+        CreateMap<StudentCreateRequest, Domain.Entities.Student>().ReverseMap();
+        CreateMap<StudentUpdateRequest, Domain.Entities.Student>().ReverseMap();
+        CreateMap<Student.Domain.Entities.Student, StudentDetailsResponse>()
+            .ForMember(c => c.Courses, x => x.MapFrom(student => student.Enrollments.Select(course => course.Course)));
     }
 }
