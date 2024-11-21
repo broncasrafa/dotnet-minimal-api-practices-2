@@ -1,13 +1,26 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Student.Domain.Interfaces.Repositories;
 using Student.Infrastructure.Persistence.Context;
+using Student.Infrastructure.Persistence.Repositories;
 
 namespace Student.Infrastructure.DependencyInjection;
 
 public static class RegisterServices
 {
-    public static IServiceCollection AddDatabaseContext(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
+    {
+        AddDatabaseContext(services, configuration);
+        AddRepositories(services);
+
+
+        return services;
+    }
+    
+    
+    
+    private static void AddDatabaseContext(IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<ApplicationDbContext>(options =>
         {
@@ -16,11 +29,10 @@ public static class RegisterServices
                       .EnableSensitiveDataLogging()
                       .EnableDetailedErrors();
             });
-        return services;
     }
-
-    public static IServiceCollection AddRepositories(this IServiceCollection services)
+    private static void AddRepositories(IServiceCollection services)
     {
-        return services;
+        services.AddTransient<ICourseRepository, CourseRepository>();
+        services.AddTransient<IStudentRepository, StudentRepository>();
     }
 }
