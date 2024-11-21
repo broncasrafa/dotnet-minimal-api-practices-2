@@ -8,7 +8,7 @@ namespace Student.Infrastructure.Persistence.Repositories.Common;
 
 internal class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : BaseEntity
 {
-    private readonly ApplicationDbContext _context;
+    protected readonly ApplicationDbContext _context;
 
     public GenericRepository(ApplicationDbContext context)
     {

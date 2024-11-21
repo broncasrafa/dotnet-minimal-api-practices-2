@@ -1,37 +1,24 @@
-﻿using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Student.Domain.Entities;
 using Student.Domain.Interfaces.Repositories;
 using Student.Infrastructure.Persistence.Context;
+using Student.Infrastructure.Persistence.Repositories.Common;
 
 
 namespace Student.Infrastructure.Persistence.Repositories;
 
-internal class CourseRepository(ApplicationDbContext context) : ICourseRepository
+internal class CourseRepository: GenericRepository<Course>, ICourseRepository
 {
-    public async Task<IEnumerable<Course>> GetAllAsync() => await context.Courses.ToListAsync();
-    public async Task<Course> GetByIdAsync(int id) => await context.Courses.FindAsync(id);
-    public async Task<Course> GetByAsync(Expression<Func<Course, bool>> predicate) => await context.Courses.FirstOrDefaultAsync(predicate);
-    public async Task<IEnumerable<Course>> FindByAsync(Expression<Func<Course, bool>> predicate) => await context.Courses.Where(predicate).ToListAsync();
-    public async Task<Course> SingleOrDefaultAsync(Expression<Func<Course, bool>> predicate) => await context.Courses.SingleOrDefaultAsync(predicate);
-    public async Task<Course> FirstOrDefaultAsync(Expression<Func<Course, bool>> predicate) => await context.Courses.FirstOrDefaultAsync(predicate);
-
-
-    public async Task<Course> InsertAsync(Course entity)
+    public CourseRepository(ApplicationDbContext context) : base(context)
     {
-        await context.Set<Course>().AddAsync(entity);
-        await context.SaveChangesAsync();
-        return entity;
     }
-    public async Task<Course> UpdateAsync(Course entity)
+
+    public async Task<Course> GetStudentListAsync(int courseId)
     {
-        context.Update(entity);
-        await context.SaveChangesAsync();
-        return entity;
-    }
-    public async Task DeleteAsync(Course entity)
-    {
-        context.Remove(entity);
-        await context.SaveChangesAsync();
+        var courses = await _context.Courses
+                                    .Include(e => e.Enrollments)
+                                    .ThenInclude(s => s.Student)
+                                    .FirstOrDefaultAsync(c => c.Id == courseId);
+        return courses;
     }
 }
