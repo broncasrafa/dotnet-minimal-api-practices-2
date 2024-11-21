@@ -50,7 +50,7 @@ public static class CourseEndpoints
             .WithOpenApi();
 
         routes.MapDelete("/{id:int}", Delete)
-            .WithName("Put")
+            .WithName("Delete")
             .Produces<ApiResult<bool>>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
@@ -72,7 +72,7 @@ public static class CourseEndpoints
     }
     private async static Task<IResult> GetOne(ILogger<Program> logger, ICourseService service, int id)
     {
-        logger.LogInformation($"Getting course with id: '{id}'");
+        logger.LogInformation($"Getting course with ID: '{id}'");
 
         if (id < 1)
         {
@@ -111,7 +111,7 @@ public static class CourseEndpoints
             throw new InvalidParameterBadRequestException("Course ID is required");
         }
 
-        logger.LogInformation($"Removing course with ID '{id}'");
+        logger.LogInformation($"Removing course with ID: '{id}'");
 
         await service.DeleteAsync(id);
 

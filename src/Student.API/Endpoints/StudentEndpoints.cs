@@ -59,7 +59,7 @@ public static class StudentEndpoints
             .WithOpenApi();
 
         routes.MapDelete("/{id:int}", Delete)
-            .WithName("Put")
+            .WithName("Delete")
             .Produces<ApiResult<bool>>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
@@ -133,7 +133,7 @@ public static class StudentEndpoints
             throw new InvalidParameterBadRequestException("Student ID is required");
         }
 
-        logger.LogInformation($"Removing student with ID '{id}'");
+        logger.LogInformation($"Removing student with ID: '{id}'");
 
         await service.DeleteAsync(id);
 
