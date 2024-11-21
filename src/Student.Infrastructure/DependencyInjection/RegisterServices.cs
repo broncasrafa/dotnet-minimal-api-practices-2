@@ -38,5 +38,6 @@ public static class RegisterServices
 
         services.AddTransient<ICourseRepository, CourseRepository>();
         services.AddTransient<IStudentRepository, StudentRepository>();
+        services.AddTransient<IEnrollmentRepository, EnrollmentRepository>();
     }
 }
