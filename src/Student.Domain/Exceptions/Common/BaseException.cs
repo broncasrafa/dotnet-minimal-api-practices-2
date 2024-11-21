@@ -2,7 +2,7 @@
 
 namespace Student.Domain.Exceptions.Common;
 
-internal abstract class BaseException : Exception
+public abstract class BaseException : Exception
 {
     public HttpStatusCode StatusCode { get; }
 
