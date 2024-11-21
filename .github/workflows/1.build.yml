@@ -1,0 +1,28 @@
+name: '1 - [FEAT] Build'
+on:
+    workflow_dispatch:
+    push: 
+        branches: ["main", "feature**"]
+
+env:
+    PROJECT_PATH: ./src/Student.API/Student.API.csproj
+
+jobs:
+    build:
+        if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+        runs-on: ubuntu-latest
+
+        steps:
+        - name: checkout
+          uses: actions/checkout@v3
+
+        - name: setup .NET
+          uses: actions/setup-dotnet@v3
+          with:
+            dotnet-version: '8.0.x'
+
+        - name: restore packages'
+          run: dotnet restore ${{ env.PROJECT_PATH }}
+
+        - name: build project
+          run: dotnet build ${{ env.PROJECT_PATH }} -c Release --no-restore
