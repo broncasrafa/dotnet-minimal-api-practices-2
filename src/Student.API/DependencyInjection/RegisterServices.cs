@@ -7,6 +7,7 @@ using Student.API.Endpoints;
 using Student.API.Middlewares;
 using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Http.Json;
 
 namespace Student.API.DependencyInjection;
 
@@ -85,10 +86,14 @@ public static class RegisterServices
                 o.SerializerSettings.PreserveReferencesHandling = PreserveReferencesHandling.None;
                 o.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             });
-            //.AddJsonOptions(options =>
-            //{
-            //    options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
-            //});
+        //.AddJsonOptions(options =>
+        //{
+        //    options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+        //});
+
+        services.Configure<JsonOptions>(o => {
+            o.SerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
+        });
     }
 
     public static void AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
