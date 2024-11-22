@@ -1,4 +1,5 @@
 using Student.API.DependencyInjection;
+using Student.API.Middlewares;
 using Student.Application.DependencyInjection;
 using Student.Infrastructure.DependencyInjection;
 using Student.Infrastructure.Settings;
@@ -9,6 +10,8 @@ builder.Services.Configure<JWTSettings>(builder.Configuration.GetSection("JWTSet
 builder.Services.AddControllerAndJsonConfig();
 builder.Services.AddJwtAuthentication(builder.Configuration);
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
 builder.Services.AddSwaggerConfig();
 builder.Services.AddCorsConfig();
 builder.Services.AddHealthChecks();
@@ -33,7 +36,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseHealthChecks("/health");
 app.UseStaticFiles();
-//app.UseExceptionHandler();
+app.UseExceptionHandler();
 app.UseCors("AllowAllPolicy");
 
 app.MapEndpoints();

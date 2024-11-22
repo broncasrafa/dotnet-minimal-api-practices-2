@@ -1,12 +1,12 @@
-﻿using System.Reflection;
+﻿using System.Text;
+using System.Reflection;
 using Microsoft.OpenApi.Models;
-using Student.API.Endpoints;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
-using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Student.API.Endpoints;
 using Student.API.Middlewares;
+using Newtonsoft.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace Student.API.DependencyInjection;
 
