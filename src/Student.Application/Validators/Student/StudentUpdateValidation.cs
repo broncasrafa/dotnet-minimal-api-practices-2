@@ -1,6 +1,6 @@
-﻿using Student.Application.DTO.Request;
-using FluentValidation;
+﻿using FluentValidation;
 using Student.Application.Validators.CustomValidators;
+using Student.Application.DTO.Request.Student;
 
 namespace Student.Application.Validators.Student;
 

@@ -1,6 +1,5 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.Extensions.Logging;
-using Student.Application.DTO.Request;
 using Student.Application.DTO.Response;
 using Student.Application.Services.Interfaces;
 using Student.Domain.Entities;
@@ -8,6 +7,7 @@ using Student.Domain.Extensions;
 using Student.Domain.Exceptions;
 using Student.Domain.Interfaces.Repositories;
 using AutoMapper;
+using Student.Application.DTO.Request.Course;
 
 namespace Student.Application.Services.Implementations;
 

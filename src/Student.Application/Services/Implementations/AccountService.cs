@@ -1,11 +1,11 @@
 ﻿using Microsoft.Extensions.Logging;
-using Student.Application.DTO.Request;
 using Student.Application.DTO.Response;
 using Student.Application.Services.Interfaces;
 using Student.Domain.Interfaces.Services;
 using Student.Domain.Extensions;
 using Student.Domain.Exceptions;
 using AutoMapper;
+using Student.Application.DTO.Request.Account;
 
 namespace Student.Application.Services.Implementations;
 

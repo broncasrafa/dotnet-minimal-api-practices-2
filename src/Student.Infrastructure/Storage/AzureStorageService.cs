@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Student.Application.DTO.Response;
+using Student.Domain.Models;
+using Student.Domain.Interfaces.Services;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using Azure;
@@ -13,26 +14,43 @@ internal class AzureStorageService(BlobServiceClient blobServiceClient, IConfigu
 
     public async Task<Guid> UploadAsync(Stream stream, string filename, string contentType, CancellationToken cancellationToken = default)
     {
+        var fileId = Guid.NewGuid();
         BlobContainerClient blobContainer = blobServiceClient.GetBlobContainerClient(_ContainerName);
-        BlobClient blobClient = blobContainer.GetBlobClient(filename);
+        BlobClient blobClient = blobContainer.GetBlobClient(fileId.ToString());
         BlobContentInfo info = await blobClient.UploadAsync(stream, new BlobHttpHeaders { ContentType = contentType }, cancellationToken: cancellationToken);
-        return Guid.NewGuid();
+        return fileId;
     }
 
 
-    public async Task<FileResponse> DownloadAsync(string filename, CancellationToken cancellationToken = default)
+    public async Task<FileResult> DownloadAsync(string filename, CancellationToken cancellationToken = default)
     {
         BlobContainerClient blobContainer = blobServiceClient.GetBlobContainerClient(_ContainerName);
         BlobClient blobClient = blobContainer.GetBlobClient(filename);
-        Response<BlobDownloadResult> response = await blobClient.DownloadContentAsync(cancellationToken: cancellationToken);
-        return new FileResponse(response.Value.Content.ToStream(), response.Value.Details.ContentType);
+        Response<BlobDownloadResult> response = null;
+        try
+        {
+            response = await blobClient.DownloadContentAsync(cancellationToken: cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+        return new FileResult(response.Value.Content.ToStream(), response.Value.Details.ContentType);
     }
-    public async Task<FileResponse> DownloadAsync(Guid fileId, CancellationToken cancellationToken = default)
+    public async Task<FileResult> DownloadAsync(Guid fileId, CancellationToken cancellationToken = default)
     {
         BlobContainerClient blobContainer = blobServiceClient.GetBlobContainerClient(_ContainerName);
         BlobClient blobClient = blobContainer.GetBlobClient(fileId.ToString());
-        Response<BlobDownloadResult> response = await blobClient.DownloadContentAsync(cancellationToken: cancellationToken);
-        return new FileResponse(response.Value.Content.ToStream(), response.Value.Details.ContentType);
+        Response<BlobDownloadResult> response = null;
+        try
+        {
+            response = await blobClient.DownloadContentAsync(cancellationToken: cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+        return new FileResult(response.Value.Content.ToStream(), response.Value.Details.ContentType);
     }
 
 

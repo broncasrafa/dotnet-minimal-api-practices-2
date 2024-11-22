@@ -1,6 +1,8 @@
-﻿using Student.Application.DTO.Request;
+﻿using Student.Domain.Entities;
 using Student.Application.DTO.Response;
-using Student.Domain.Entities;
+using Student.Application.DTO.Request.Course;
+using Student.Application.DTO.Request.Enrollment;
+using Student.Application.DTO.Request.Student;
 using AutoMapper;
 
 namespace Student.Application.Mappers;
@@ -15,10 +17,12 @@ internal class MappingProfile : Profile
         CreateMap<Course, CourseDetailsResponse>()
             .ForMember(c => c.Students, x => x.MapFrom(course => course.Enrollments.Select(student => student.Student)));
 
-        CreateMap<Domain.Entities.Student, StudentResponse>().ReverseMap();
+        CreateMap<Domain.Entities.Student, StudentResponse>()
+            .ForMember(dest => dest.PictureId, opt => opt.MapFrom(src => src.Picture))
+            .ReverseMap();
         CreateMap<StudentCreateRequest, Domain.Entities.Student>().ReverseMap();
         CreateMap<StudentUpdateRequest, Domain.Entities.Student>().ReverseMap();
-        CreateMap<Student.Domain.Entities.Student, StudentDetailsResponse>()
+        CreateMap<Domain.Entities.Student, StudentDetailsResponse>()
             .ForMember(c => c.Courses, x => x.MapFrom(student => student.Enrollments.Select(course => course.Course)));
 
         CreateMap<Enrollment, EnrollmentResponse>().ReverseMap();

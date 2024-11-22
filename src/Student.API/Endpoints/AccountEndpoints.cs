@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Student.API.Filters;
 using Student.API.Models;
-using Student.Application.DTO.Request;
+using Student.Application.DTO.Request.Account;
 using Student.Application.DTO.Response;
 using Student.Application.Services.Interfaces;
 
@@ -14,6 +14,7 @@ public static class AccountEndpoints
         var routes = builder.MapGroup("api/account").WithTags("Account");
 
         routes.MapPost("/login", LoginUser)
+            .AllowAnonymous()
             .AddEndpointFilter<ValidationFilter>()
             .WithName("LoginUser")
             .Accepts<UserLoginRequest>("application/json")
@@ -25,6 +26,7 @@ public static class AccountEndpoints
 
 
         routes.MapPost("/register", RegisterUser)
+            .AllowAnonymous()
             .AddEndpointFilter<ValidationFilter>()
             .WithName("RegisterUser")
             .Accepts<UserRegisterRequest>("application/json")

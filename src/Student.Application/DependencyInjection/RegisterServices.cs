@@ -24,6 +24,7 @@ public static class RegisterServices
         services.AddScoped<IStudentService, StudentService>();
         services.AddScoped<IEnrollmentService, EnrollmentService>();
         services.AddScoped<IAccountService, AccountService>();
+        services.AddScoped<IFileService, FileService>();
     }
     private static void AddAutomapper(IServiceCollection services) 
     {

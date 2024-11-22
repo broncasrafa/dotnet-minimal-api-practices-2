@@ -1,6 +1,6 @@
-﻿using Student.Application.DTO.Request;
-using Student.Application.Services.Interfaces;
+﻿using Student.Application.Services.Interfaces;
 using FluentValidation;
+using Student.Application.DTO.Request.Course;
 
 namespace Student.Application.Validators.Course;
 

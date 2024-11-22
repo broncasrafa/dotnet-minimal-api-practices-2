@@ -1,5 +1,5 @@
 ﻿using System.Linq.Expressions;
-using Student.Application.DTO.Request;
+using Student.Application.DTO.Request.Course;
 using Student.Application.DTO.Response;
 using Student.Domain.Entities;
 

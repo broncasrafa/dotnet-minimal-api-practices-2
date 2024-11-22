@@ -1,8 +1,8 @@
-﻿using Student.Application.DTO.Request;
-using Student.Application.DTO.Response;
+﻿using Student.Application.DTO.Response;
 using Student.Application.Services.Interfaces;
 using FluentValidation;
 using Student.Domain.Entities;
+using Student.Application.DTO.Request.Enrollment;
 
 
 namespace Student.Application.Validators.Enrollment;
@@ -21,7 +21,7 @@ public class EnrollmentCreateValidation : AbstractValidator<EnrollmentCreateRequ
         RuleFor(model => model.StudentId).Cascade(CascadeMode.Stop)
             .NotEmpty().WithMessage("Student ID is required")
             .GreaterThan(0).WithMessage("Course ID must be greater than 0")
-            .MustAsync(CheckIfStudentIsAlreadyRegisteredInCourseAsync).WithMessage("Student already enrolled in course");
+            .MustAsync(CheckIfStudentIsAlreadyRegisteredInCourseAsync).WithMessage("Student already enrolled in this course");
     }
 
     private async Task<bool> CheckIfStudentIsAlreadyRegisteredInCourseAsync(EnrollmentCreateRequest request, int studentId, CancellationToken cancellationToken)

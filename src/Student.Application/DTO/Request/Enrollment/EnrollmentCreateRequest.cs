@@ -1,4 +1,4 @@
-﻿namespace Student.Application.DTO.Request;
+﻿namespace Student.Application.DTO.Request.Enrollment;
 
 public class EnrollmentCreateRequest
 {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Student.API.Filters;
 using Student.API.Models;
-using Student.Application.DTO.Request;
+using Student.Application.DTO.Request.Course;
 using Student.Application.DTO.Response;
 using Student.Application.Services.Interfaces;
 using Student.Domain.Exceptions;

@@ -1,4 +1,4 @@
-﻿using Student.Application.DTO.Request;
+﻿using Student.Application.DTO.Request.Account;
 using Student.Application.DTO.Response;
 
 namespace Student.Application.Services.Interfaces;
