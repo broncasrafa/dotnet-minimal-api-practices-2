@@ -12,6 +12,9 @@ internal class EnrollmentRepository : GenericRepository<Enrollment>, IEnrollment
     {
     }
 
+    public async Task<IEnumerable<Enrollment>> GetDetailedEnrollmentsAsync()
+        => await _context.Enrollments.AsNoTracking().Include(c => c.Course).Include(s => s.Student).ToListAsync();
+
     public async Task<IEnumerable<Enrollment>> GetStudentEnrollmentsAsync(int studentId)
         => await _context.Enrollments.Where(c => c.StudentId == studentId).ToListAsync();
 }
