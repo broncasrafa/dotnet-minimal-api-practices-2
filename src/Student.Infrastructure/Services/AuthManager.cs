@@ -1,7 +1,6 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
-using Student.Application.DTO.Response;
 using Student.Domain.Entities;
 using Student.Domain.Interfaces.Services;
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Azure.Storage.Blobs;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,6 +11,7 @@ using Student.Infrastructure.Persistence.Context;
 using Student.Infrastructure.Persistence.Repositories;
 using Student.Infrastructure.Persistence.Repositories.Common;
 using Student.Infrastructure.Services;
+using Student.Infrastructure.Storage;
 
 namespace Student.Infrastructure.DependencyInjection;
 
@@ -21,6 +23,7 @@ public static class RegisterServices
         AddIdentity(services);
         AddRepositories(services);
         AddServices(services);
+        AddAzureStorageService(services, configuration);
 
         return services;
     }
@@ -55,5 +58,11 @@ public static class RegisterServices
     {
         services.AddTransient<IJwtTokenService, JwtTokenService>();
         services.AddTransient<IAuthManager, AuthManager>();
+    }
+
+    private static void AddAzureStorageService(IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddSingleton<IStorageService, AzureStorageService>();
+        services.AddSingleton(_ => new BlobServiceClient(configuration["AzureStorageSettings:ConnectionString"]));
     }
 }

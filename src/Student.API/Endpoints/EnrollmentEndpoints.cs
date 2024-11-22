@@ -31,6 +31,7 @@ public static class EnrollmentEndpoints
             .WithOpenApi();
 
         routes.MapPost("/", PostEnrollment)
+            .Accepts<EnrollmentCreateRequest>("application/json")
             .AddEndpointFilter<ValidationFilter>()
             .WithName("PostEnrollment")
             .Produces<ApiResult<EnrollmentResponse>>(StatusCodes.Status201Created)
