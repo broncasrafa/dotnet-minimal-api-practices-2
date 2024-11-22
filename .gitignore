@@ -352,3 +352,4 @@ MigrationBackup/
 
 /src/Student.API/appsettings.json
 /src/Student.API/appsettings.Development.json
+/src/Student.API/appsettings.Development.json
