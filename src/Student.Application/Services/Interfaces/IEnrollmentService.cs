@@ -7,6 +7,7 @@ namespace Student.Application.Services.Interfaces;
 
 public interface IEnrollmentService
 {
+    Task<IEnumerable<EnrollmentResponse>> GetStudentEnrollmentsAsync(int studentId);
     Task<IEnumerable<EnrollmentResponse>> GetAllAsync();
     Task<EnrollmentResponse> GetByIdAsync(int id);
     Task<EnrollmentResponse> FindByAsync(Expression<Func<Enrollment, bool>> predicate);

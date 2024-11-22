@@ -30,6 +30,11 @@ internal class EnrollmentService : IEnrollmentService
         var data = await _repository.GetAllAsync();
         return _mapper.Map<IEnumerable<EnrollmentResponse>>(data);
     }
+    public async Task<IEnumerable<EnrollmentResponse>> GetStudentEnrollmentsAsync(int studentId)
+    {
+        var data = await _repository.GetStudentEnrollmentsAsync(studentId);
+        return _mapper.Map<IEnumerable<EnrollmentResponse>>(data);
+    }
     public async Task<EnrollmentResponse> GetByIdAsync(int id)
     {
         var data = await _repository.GetByIdAsync(id)
@@ -46,7 +51,10 @@ internal class EnrollmentService : IEnrollmentService
         var entity = _mapper.Map<Enrollment>(request);
         // entity.CreatedBy = "";
 
-        // TODO: verificar se o aluno já pertence ao curso em questão para DEPOIS inserir
+        // verificar se o aluno já pertence ao curso em questão para DEPOIS inserir
+        var studentEnrolledCourses = await _repository.FindByAsync(c => c.StudentId == request.StudentId);
+        var enrolledCourse = studentEnrolledCourses?.FirstOrDefault(c => c.CourseId == request.CourseId);
+        if (enrolledCourse != null) throw new StudentAlreadyEnrolledInCourseException(request.StudentId, request.CourseId);
 
         var newEnrollment = await _repository.InsertAsync(entity);
 

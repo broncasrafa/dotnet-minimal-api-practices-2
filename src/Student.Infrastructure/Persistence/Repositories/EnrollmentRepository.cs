@@ -1,4 +1,5 @@
-﻿using Student.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using Student.Domain.Entities;
 using Student.Domain.Interfaces.Repositories;
 using Student.Infrastructure.Persistence.Context;
 using Student.Infrastructure.Persistence.Repositories.Common;
@@ -10,4 +11,7 @@ internal class EnrollmentRepository : GenericRepository<Enrollment>, IEnrollment
     public EnrollmentRepository(ApplicationDbContext context) : base(context)
     {
     }
+
+    public async Task<IEnumerable<Enrollment>> GetStudentEnrollmentsAsync(int studentId)
+        => await _context.Enrollments.Where(c => c.StudentId == studentId).ToListAsync();
 }

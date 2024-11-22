@@ -5,4 +5,5 @@ namespace Student.Domain.Interfaces.Repositories;
 
 public interface IEnrollmentRepository : IGenericRepository<Enrollment>
 {
+    Task<IEnumerable<Enrollment>> GetStudentEnrollmentsAsync(int studentId);
 }
