@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity.Data;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Student.API.Filters;
 using Student.API.Models;
 using Student.Application.DTO.Request;
@@ -53,6 +52,7 @@ public static class StudentEndpoints
         routes.MapPut("/{id:int}", PutStudent)
             .AddEndpointFilter<ValidationFilter>()
             .WithName("PutStudent")
+            .Accepts<StudentUpdateRequest>("application/json")
             .Produces<ApiResult<StudentResponse>>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
