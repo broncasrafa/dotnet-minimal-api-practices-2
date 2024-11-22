@@ -8,9 +8,16 @@ using Student.Infrastructure.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.Configure<JWTSettings>(builder.Configuration.GetSection("JWTSettings"));
+IConfiguration configuration = new ConfigurationBuilder()
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    //.AddJsonFile($"appsettings.{Environments.Development}.json", optional: true, reloadOnChange: true)
+    .AddEnvironmentVariables()
+    .Build();
+
+builder.Services.Configure<JWTSettings>(configuration.GetSection("JWTSettings"));
 builder.Services.AddControllerAndJsonConfig();
-builder.Services.AddJwtAuthentication(builder.Configuration);
+builder.Services.AddJwtAuthentication(configuration);
 builder.Services.AddAuthorization(options =>
 {
     options.FallbackPolicy = new AuthorizationPolicyBuilder()
@@ -24,7 +31,7 @@ builder.Services.AddProblemDetails();
 builder.Services.AddSwaggerConfig();
 builder.Services.AddCorsConfig();
 builder.Services.AddHealthChecks();
-builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddInfrastructure(configuration);
 builder.Services.AddApplication();
 
 
