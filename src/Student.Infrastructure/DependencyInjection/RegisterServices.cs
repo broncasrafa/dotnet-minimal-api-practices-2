@@ -1,11 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Student.Domain.Entities;
 using Student.Domain.Interfaces.Repositories;
 using Student.Domain.Interfaces.Repositories.Common;
+using Student.Domain.Interfaces.Services;
 using Student.Infrastructure.Persistence.Context;
 using Student.Infrastructure.Persistence.Repositories;
 using Student.Infrastructure.Persistence.Repositories.Common;
+using Student.Infrastructure.Services;
 
 namespace Student.Infrastructure.DependencyInjection;
 
@@ -14,8 +18,9 @@ public static class RegisterServices
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         AddDatabaseContext(services, configuration);
+        AddIdentity(services);
         AddRepositories(services);
-
+        AddServices(services);
 
         return services;
     }
@@ -32,6 +37,12 @@ public static class RegisterServices
                       .EnableDetailedErrors();
             });
     }
+    private static void AddIdentity(IServiceCollection services)
+    {
+        services.AddIdentityCore<SchoolUser>()
+            .AddRoles<IdentityRole>()
+            .AddEntityFrameworkStores<ApplicationDbContext>();
+    }
     private static void AddRepositories(IServiceCollection services)
     {
         services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
@@ -39,5 +50,10 @@ public static class RegisterServices
         services.AddTransient<ICourseRepository, CourseRepository>();
         services.AddTransient<IStudentRepository, StudentRepository>();
         services.AddTransient<IEnrollmentRepository, EnrollmentRepository>();
+    }
+    private static void AddServices(IServiceCollection services)
+    {
+        services.AddTransient<IJwtTokenService, JwtTokenService>();
+        services.AddTransient<IAuthManager, AuthManager>();
     }
 }

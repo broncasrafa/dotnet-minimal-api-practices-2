@@ -4,7 +4,7 @@ using Student.Domain.Entities;
 
 namespace Student.Infrastructure.Persistence.Context;
 
-public class ApplicationDbContext : IdentityDbContext
+public class ApplicationDbContext : IdentityDbContext<SchoolUser>
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options): base(options)
     {
@@ -12,7 +12,7 @@ public class ApplicationDbContext : IdentityDbContext
     }
 
     public DbSet<Course> Courses { get; set; }
-    public DbSet<Student.Domain.Entities.Student> Students { get; set; }
+    public DbSet<Domain.Entities.Student> Students { get; set; }
     public DbSet<Enrollment> Enrollments { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
@@ -22,7 +22,7 @@ public class ApplicationDbContext : IdentityDbContext
         builder.HasDefaultSchema("dbo");
 
         builder.Entity<Course>().ToTable("Course");
-        builder.Entity<Student.Domain.Entities.Student>().ToTable("Student");
+        builder.Entity<Domain.Entities.Student>().ToTable("Student");
         builder.Entity<Enrollment>().ToTable("Enrollment");
 
         //builder.ApplyConfigurationsFromAssembly(assembly: Assembly.GetExecutingAssembly());

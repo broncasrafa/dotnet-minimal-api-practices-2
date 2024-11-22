@@ -22,6 +22,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.11" />
 		<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.11" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.11" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.11">
@@ -35,10 +36,6 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\Student.Application\Student.Application.csproj" />
 	  <ProjectReference Include="..\Student.Infrastructure\Student.Infrastructure.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Middlewares\" />
 	</ItemGroup>
 
 </Project>

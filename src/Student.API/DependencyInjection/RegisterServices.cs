@@ -3,6 +3,10 @@ using Microsoft.OpenApi.Models;
 using Student.API.Endpoints;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Student.API.Middlewares;
 
 namespace Student.API.DependencyInjection;
 
@@ -34,6 +38,33 @@ public static class RegisterServices
                 }
             });
 
+            options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                Name = "Authorization",
+                In = ParameterLocation.Header,
+                Type = SecuritySchemeType.ApiKey,
+                Scheme = "Bearer",
+                BearerFormat = "JWT",
+                Description = "Informe seu token bearer para acessar os recursos da API da seguinte forma: Bearer {your token here}",
+            });
+
+            options.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer",
+                        },
+                        Scheme = "Bearer",
+                        Name = "Bearer",
+                        In = ParameterLocation.Header,
+                    }, new List<string>()
+                },
+            });
+
 
             //Set the comments path for the Swagger JSON and UI.
             string xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
@@ -60,13 +91,47 @@ public static class RegisterServices
             //});
     }
 
+    public static void AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddAuthentication(c =>
+        {
+            c.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            c.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        })
+        .AddJwtBearer(options =>
+        {
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWTSettings:Key"])),
+                ValidIssuer = configuration["JWTSettings:Issuer"],
+                ValidateIssuer = true,
+                ValidateAudience = false
+            };
 
+            options.Events = new JwtBearerEvents
+            {
+                OnChallenge = async context =>
+                {
+                    context.HandleResponse();
+                    await AuthErrorHandler.HandleAuthError(context.HttpContext, StatusCodes.Status401Unauthorized);
+                },
+                OnForbidden = async context =>
+                {
+                    context.Response.StatusCode = StatusCodes.Status403Forbidden;
+                    context.Response.ContentType = "application/json";
+                    await AuthErrorHandler.HandleAuthError(context.HttpContext, StatusCodes.Status403Forbidden);
+                }
+            };
+        });
+    }
 
     public static IApplicationBuilder MapEndpoints(this WebApplication app)
     {
         app.MapCourseEndpoints();
         app.MapStudentEndpoints();
         app.MapEnrollmentEndpoints();
+        app.MapAccountEndpoints();
         return app;
     }
 }

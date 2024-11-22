@@ -1,10 +1,13 @@
 using Student.API.DependencyInjection;
 using Student.Application.DependencyInjection;
 using Student.Infrastructure.DependencyInjection;
+using Student.Infrastructure.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.Configure<JWTSettings>(builder.Configuration.GetSection("JWTSettings"));
 builder.Services.AddControllerAndJsonConfig();
+builder.Services.AddJwtAuthentication(builder.Configuration);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerConfig();
 builder.Services.AddCorsConfig();

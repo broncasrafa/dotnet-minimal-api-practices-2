@@ -12,8 +12,8 @@ using Student.Infrastructure.Persistence.Context;
 namespace Student.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241121170750_Adding_Tables_And_Seed_Data")]
-    partial class Adding_Tables_And_Seed_Data
+    [Migration("20241121191031_Creating_Tables_And_Seed_Datas")]
+    partial class Creating_Tables_And_Seed_Datas
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -55,13 +55,13 @@ namespace Student.Infrastructure.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "a7cc3bab-3631-412d-a8bc-e9dc628d2c8b",
+                            Id = "c3965f85-106b-4ccd-aa72-4c629e0a9976",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
-                            Id = "fcbcdd68-cccf-4e6c-9b3f-fa183fd8a175",
+                            Id = "345255c0-3e2a-4a4a-b566-5b4cb137d1a2",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -103,6 +103,11 @@ namespace Student.Infrastructure.Persistence.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(13)
+                        .HasColumnType("nvarchar(13)");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -155,6 +160,10 @@ namespace Student.Infrastructure.Persistence.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", "dbo");
+
+                    b.HasDiscriminator().HasValue("IdentityUser");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -217,6 +226,23 @@ namespace Student.Infrastructure.Persistence.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", "dbo");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "e9b9e0d9-ef83-4704-bc16-b63cdabeece6",
+                            RoleId = "c3965f85-106b-4ccd-aa72-4c629e0a9976"
+                        },
+                        new
+                        {
+                            UserId = "f0a6f7af-3143-460f-9d17-cc0261833bc3",
+                            RoleId = "345255c0-3e2a-4a4a-b566-5b4cb137d1a2"
+                        },
+                        new
+                        {
+                            UserId = "39d9a772-4d54-4ad5-b4b8-cfc9aa24af08",
+                            RoleId = "345255c0-3e2a-4a4a-b566-5b4cb137d1a2"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -272,21 +298,21 @@ namespace Student.Infrastructure.Persistence.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 11, 21, 17, 7, 49, 849, DateTimeKind.Utc).AddTicks(2521),
+                            CreatedAt = new DateTime(2024, 11, 21, 19, 10, 30, 793, DateTimeKind.Utc).AddTicks(8284),
                             Credits = 3,
                             Title = "Minimal API Development"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2024, 11, 21, 17, 7, 49, 849, DateTimeKind.Utc).AddTicks(2525),
+                            CreatedAt = new DateTime(2024, 11, 21, 19, 10, 30, 793, DateTimeKind.Utc).AddTicks(8290),
                             Credits = 5,
                             Title = "Spring Boot Development"
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2024, 11, 21, 17, 7, 49, 849, DateTimeKind.Utc).AddTicks(2527),
+                            CreatedAt = new DateTime(2024, 11, 21, 19, 10, 30, 793, DateTimeKind.Utc).AddTicks(8291),
                             Credits = 4,
                             Title = "Ultimate .NET API Development"
                         });
@@ -365,6 +391,78 @@ namespace Student.Infrastructure.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Student", "dbo");
+                });
+
+            modelBuilder.Entity("Student.Domain.Entities.SchoolUser", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+
+                    b.Property<DateTime?>("DateOfBirth")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasDiscriminator().HasValue("SchoolUser");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "e9b9e0d9-ef83-4704-bc16-b63cdabeece6",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "1137fdf0-48e6-42a0-a934-0d2746f0b05f",
+                            Email = "schooladmin@localhost.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "SCHOOLADMIN@LOCALHOST.COM",
+                            NormalizedUserName = "SCHOOLADMIN",
+                            PasswordHash = "AQAAAAIAAYagAAAAEBOc+S6SxfoX2rFRsuKR8ssjU9zNuNaXQXFPpK17k4K3+ofYagd26fsi3SLzs+IIaA==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "4e46f49f-4eaa-4589-a17e-d5c0f04267a2",
+                            TwoFactorEnabled = false,
+                            UserName = "schooladmin",
+                            FirstName = "School",
+                            LastName = "Admin"
+                        },
+                        new
+                        {
+                            Id = "f0a6f7af-3143-460f-9d17-cc0261833bc3",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "8f1fdb0e-e319-4b2e-bfe5-0ffc4e56a026",
+                            Email = "schooluser1@localhost.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "SCHOOLUSER1@LOCALHOST.COM",
+                            NormalizedUserName = "SCHOOLUSER1",
+                            PasswordHash = "AQAAAAIAAYagAAAAEDpf3AM7UJvc9QLZvwKNEQkDuaZwc2+kFWdkmk+8SQDWifNdn13v6r5dLer9IqHnYw==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "15129a92-719b-416f-ac56-343ee9aca2ef",
+                            TwoFactorEnabled = false,
+                            UserName = "schooluser1",
+                            FirstName = "School_1",
+                            LastName = "User"
+                        },
+                        new
+                        {
+                            Id = "39d9a772-4d54-4ad5-b4b8-cfc9aa24af08",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "a3712065-5728-4f99-81a9-db5eaed6fd32",
+                            Email = "schooluser2@localhost.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "SCHOOLUSER2@LOCALHOST.COM",
+                            NormalizedUserName = "SCHOOLUSER2",
+                            PasswordHash = "AQAAAAIAAYagAAAAEGl3fAvY95IQnzLw3rn9VlL988tX23/Ij+Oeq9Dgwk8p6WT1qkK+Np5zD72DwiJ5Qg==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "1ecbf088-296b-4e6a-a254-c469f7f94648",
+                            TwoFactorEnabled = false,
+                            UserName = "schooluser2",
+                            FirstName = "School_2",
+                            LastName = "User"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
