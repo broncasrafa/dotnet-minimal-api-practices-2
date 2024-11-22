@@ -35,8 +35,8 @@ public static class StudentEndpoints
             .Produces<ApiResult<StudentDetailsResponse>>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
-            .WithDescription("Obter os detalhes do aluno pelo ID especificado")
-            .WithSummary("Obter os detalhes do aluno pelo ID especificado")
+            .WithDescription("Obter os detalhes do aluno com os cursos matriculados pelo ID especificado")
+            .WithSummary("Obter os detalhes do aluno com os cursos matriculados pelo ID especificado")
             .WithOpenApi();
 
         routes.MapGet("/{id:int}/picture/download/{fileId}", GetProfilePicture)

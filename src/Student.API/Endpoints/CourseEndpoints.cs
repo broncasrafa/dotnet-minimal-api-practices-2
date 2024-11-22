@@ -15,6 +15,7 @@ public static class CourseEndpoints
         var routes = builder.MapGroup("api/courses").WithTags("Courses");
 
         routes.MapGet("/", GetAllCourses)
+            .AllowAnonymous()
             .WithName("GetAllCourses")
             .Produces<ApiResult<IEnumerable<CourseResponse>>>(StatusCodes.Status200OK)
             .WithDescription("Obter a lista de cursos")
@@ -22,6 +23,7 @@ public static class CourseEndpoints
             .WithOpenApi();
 
         routes.MapGet("/{id:int}", GetOneCourse)
+            .AllowAnonymous()
             .WithName("GetOneCourse")
             .Produces<ApiResult<CourseResponse>>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
