@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Student.API.DependencyInjection;
+using Student.API.Extensions;
 using Student.API.Middlewares;
 using Student.Application.DependencyInjection;
 using Student.Infrastructure.DependencyInjection;
@@ -15,7 +16,8 @@ IConfiguration configuration = new ConfigurationBuilder()
     .AddEnvironmentVariables()
     .Build();
 
-builder.Services.Configure<JWTSettings>(configuration.GetSection("JWTSettings"));
+builder.Services.AddConfigurationSettings<JWTSettings>(configuration, "JWTSettings");
+//builder.Services.Configure<JWTSettings>(configuration.GetSection("JWTSettings"));
 builder.Services.AddControllerAndJsonConfig();
 builder.Services.AddJwtAuthentication(configuration);
 builder.Services.AddAuthorization(options =>
