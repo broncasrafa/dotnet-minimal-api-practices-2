@@ -1,5 +1,4 @@
-﻿using Azure.Storage.Blobs;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,6 +11,7 @@ using Student.Infrastructure.Persistence.Repositories;
 using Student.Infrastructure.Persistence.Repositories.Common;
 using Student.Infrastructure.Services;
 using Student.Infrastructure.Storage;
+using Azure.Storage.Blobs;
 
 namespace Student.Infrastructure.DependencyInjection;
 

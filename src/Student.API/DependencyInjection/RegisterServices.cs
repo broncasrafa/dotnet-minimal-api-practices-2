@@ -2,17 +2,26 @@
 using System.Reflection;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http.Json;
 using Microsoft.IdentityModel.Tokens;
 using Student.API.Endpoints;
 using Student.API.Middlewares;
+using Student.API.Extensions;
+using Student.Infrastructure.Settings;
 using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json;
-using Microsoft.AspNetCore.Http.Json;
 
 namespace Student.API.DependencyInjection;
 
 public static class RegisterServices
 {
+    public static IServiceCollection AddSettingsConfig(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddConfigurationSettings<JWTSettings>(configuration, "JWTSettings");
+        services.AddConfigurationSettings<AzureStorageSettings>(configuration, "AzureStorageSettings");
+
+        return services;
+    }
     public static IServiceCollection AddCorsConfig(this IServiceCollection services)
     {
         services.AddCors(options =>

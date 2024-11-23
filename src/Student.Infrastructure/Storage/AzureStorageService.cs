@@ -1,15 +1,16 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Options;
 using Student.Domain.Models;
 using Student.Domain.Interfaces.Services;
+using Student.Infrastructure.Settings;
+using Azure;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
-using Azure;
 
 namespace Student.Infrastructure.Storage;
 
-internal class AzureStorageService(BlobServiceClient blobServiceClient, IConfiguration configuration) : IStorageService
+internal class AzureStorageService(BlobServiceClient blobServiceClient, IOptions<AzureStorageSettings> azureSettings) : IStorageService
 {
-    private readonly string _ContainerName = configuration.GetSection("AzureStorageSettings:ContainerName").Value;
+    private readonly string _ContainerName = azureSettings.Value.ContainerName;
 
 
     public async Task<Guid> UploadAsync(Stream stream, string filename, string contentType, CancellationToken cancellationToken = default)

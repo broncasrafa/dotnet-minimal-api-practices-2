@@ -16,8 +16,7 @@ IConfiguration configuration = new ConfigurationBuilder()
     .AddEnvironmentVariables()
     .Build();
 
-builder.Services.AddConfigurationSettings<JWTSettings>(configuration, "JWTSettings");
-//builder.Services.Configure<JWTSettings>(configuration.GetSection("JWTSettings"));
+builder.Services.AddSettingsConfig(configuration);
 builder.Services.AddControllerAndJsonConfig();
 builder.Services.AddJwtAuthentication(configuration);
 builder.Services.AddAuthorization(options =>
