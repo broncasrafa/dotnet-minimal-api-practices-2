@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Http.Json;
 using Microsoft.IdentityModel.Tokens;
 using Student.API.Endpoints;
 using Student.API.Middlewares;
-using Student.API.Extensions;
 using Student.Infrastructure.Settings;
 using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json;
@@ -15,10 +14,23 @@ namespace Student.API.DependencyInjection;
 
 public static class RegisterServices
 {
+    public static IApplicationBuilder MapEndpoints(this WebApplication app)
+    {
+        app.MapCourseEndpoints();
+        app.MapStudentEndpoints();
+        app.MapEnrollmentEndpoints();
+        app.MapAccountEndpoints();
+
+        return app;
+    }
+
     public static IServiceCollection AddSettingsConfig(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddConfigurationSettings<JWTSettings>(configuration, "JWTSettings");
-        services.AddConfigurationSettings<AzureStorageSettings>(configuration, "AzureStorageSettings");
+        //services.AddConfigurationSettings<JWTSettings>(configuration, "JWTSettings");
+        //services.AddConfigurationSettings<AzureStorageSettings>(configuration, "AzureStorageSettings");
+
+        services.Configure<JWTSettings>(configuration.GetSection("JWTSettings"));
+        services.Configure<AzureStorageSettings>(configuration.GetSection("AzureStorageSettings"));
 
         return services;
     }
@@ -140,12 +152,5 @@ public static class RegisterServices
         });
     }
 
-    public static IApplicationBuilder MapEndpoints(this WebApplication app)
-    {
-        app.MapCourseEndpoints();
-        app.MapStudentEndpoints();
-        app.MapEnrollmentEndpoints();
-        app.MapAccountEndpoints();
-        return app;
-    }
+    
 }

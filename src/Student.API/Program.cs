@@ -1,11 +1,9 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Student.API.DependencyInjection;
-using Student.API.Extensions;
 using Student.API.Middlewares;
 using Student.Application.DependencyInjection;
 using Student.Infrastructure.DependencyInjection;
-using Student.Infrastructure.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 
